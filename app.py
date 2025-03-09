@@ -1,6 +1,10 @@
 import os
 import streamlit as st
 import base64
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 from dotenv import load_dotenv
 
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -13,6 +17,8 @@ from langchain_groq.chat_models import ChatGroq
 
 load_dotenv()
 _ = load_dotenv
+
+os.environ['GROQ_API_KEY'] = st.secrets['GROQ_API_KEY']
 
 # Configura la chiave API di Groq
 api_key = os.getenv("GROQ_API_KEY")
