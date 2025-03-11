@@ -68,13 +68,10 @@ The following **context** contains relevant information that may assist in formu
 **Context:**
 {context} 
 ---
-**Chat History:**
-{chat_history}
----
 **Question:** {question}  
 **Response:**  
 """,
-        input_variables=["context","chat_history","question"],
+        input_variables=["context","question"],
     )
 
     # 5. Crea la chain RetrievalQA combinando il retriever (ChromaDB) e il modello ChatGroq
@@ -302,26 +299,15 @@ col_chat, col_media, col_ach = st.columns([3, 1.5, 1.5])
 with col_chat:
     st.header("Chat Interface")
     with st.form(key="query_form", clear_on_submit=True):
-        user_input = st.text_input("Your message:")
+        user_input = st.text_input("")
         submit_button = st.form_submit_button(label="Invia")
     
-    if user_input and submit_button:
-        if st.session_state.chat_history == []:
-            last_three = []
-        else:
-        # Recupera gli ultimi 3 messaggi dalla cronologia, formattandoli in una stringa
-            last_three = st.session_state.chat_history[-3:]
-        # Formatta: "Mittente: messaggio"
-        chat_history_str = "\n".join([f"{sender}: {msg}" for sender, msg in last_three])
-        
+    if submit_button and user_input:
         with st.spinner("I'm thinking..."):
             try:
-                # Il metodo run riceve il "question" e il "chat_history" aggiuntivo.
-                # Il parametro "context" verrà automaticamente popolato dal retriever.
-                answer = qa_chain.invoke(user_input, chat_history_str)
+                answer = qa_chain.run(user_input)
             except Exception as e:
                 answer = f"Si è verificato un errore durante l'elaborazione: {e}"
-
         st.session_state.chat_history.append(("Utente", user_input))
         st.session_state.chat_history.append(("John F. Kennedy", answer))
         
