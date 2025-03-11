@@ -306,8 +306,11 @@ with col_chat:
         submit_button = st.form_submit_button(label="Invia")
     
     if user_input and submit_button:
+        if st.session_state.chat_history == []:
+            last_three = []
+        else:
         # Recupera gli ultimi 3 messaggi dalla cronologia, formattandoli in una stringa
-        last_three = st.session_state.chat_history[-3:]
+            last_three = st.session_state.chat_history[-3:]
         # Formatta: "Mittente: messaggio"
         chat_history_str = "\n".join([f"{sender}: {msg}" for sender, msg in last_three])
         
