@@ -318,6 +318,9 @@ with col_chat:
                 answer = qa_chain.invoke(user_input, chat_history_str)
             except Exception as e:
                 answer = f"Si è verificato un errore durante l'elaborazione: {e}"
+
+        st.session_state.chat_history.append(("Utente", user_input))
+        st.session_state.chat_history.append(("John F. Kennedy", answer))
         
     
     # Visualizza la chat solo se abilitata
