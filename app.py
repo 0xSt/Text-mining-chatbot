@@ -66,12 +66,15 @@ The following **context** contains relevant information that may assist in formu
 
 ---
 **Context:**
-{context}
+{context} 
+---
+**Chat History:**
+{chat_history}
 ---
 **Question:** {question}  
 **Response:**  
 """,
-        input_variables=["context", "question"],
+        input_variables=["context","chat_history",  "question"],
     )
 
     # 5. Crea la chain RetrievalQA combinando il retriever (ChromaDB) e il modello ChatGroq
@@ -303,14 +306,18 @@ with col_chat:
         submit_button = st.form_submit_button(label="Invia")
     
     if submit_button and user_input:
+        # Recupera gli ultimi 3 messaggi dalla cronologia, formattandoli in una stringa
+        last_three = st.session_state.chat_history[-3:]
+        # Formatta: "Mittente: messaggio"
+        chat_history_str = "\n".join([f"{sender}: {msg}" for sender, msg in last_three])
+        
         with st.spinner("I'm thinking..."):
             try:
-                answer = qa_chain.run(user_input)
+                # Il metodo run riceve il "question" e il "chat_history" aggiuntivo.
+                # Il parametro "context" verrà automaticamente popolato dal retriever.
+                answer = qa_chain.run(question=user_input, chat_history=chat_history_str)
             except Exception as e:
                 answer = f"Si è verificato un errore durante l'elaborazione: {e}"
-        st.session_state.chat_history.append(("Utente", user_input))
-        st.session_state.chat_history.append(("John F. Kennedy", answer))
-        # Se la cronologia supera 5 messaggi, nascondi la visualizzazione (ma conserva in memoria)
         
     
     # Visualizza la chat solo se abilitata
