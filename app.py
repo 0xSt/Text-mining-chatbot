@@ -302,7 +302,7 @@ col_chat, col_media, col_ach = st.columns([3, 1.5, 1.5])
 with col_chat:
     st.header("Chat Interface")
     with st.form(key="query_form", clear_on_submit=True):
-        user_input = st.text_input("")
+        user_input = st.text_input("Your message:")
         submit_button = st.form_submit_button(label="Invia")
     
     if user_input and submit_button:
