@@ -315,7 +315,7 @@ with col_chat:
             try:
                 # Il metodo run riceve il "question" e il "chat_history" aggiuntivo.
                 # Il parametro "context" verrà automaticamente popolato dal retriever.
-                answer = qa_chain.run(user_input, chat_history_str)
+                answer = qa_chain.invoke(user_input, chat_history_str)
             except Exception as e:
                 answer = f"Si è verificato un errore durante l'elaborazione: {e}"
         
