@@ -74,7 +74,7 @@ The following **context** contains relevant information that may assist in formu
 **Question:** {question}  
 **Response:**  
 """,
-        input_variables=["context","chat_history",  "question"],
+        input_variables=["context","chat_history","question"],
     )
 
     # 5. Crea la chain RetrievalQA combinando il retriever (ChromaDB) e il modello ChatGroq
@@ -315,7 +315,7 @@ with col_chat:
             try:
                 # Il metodo run riceve il "question" e il "chat_history" aggiuntivo.
                 # Il parametro "context" verrà automaticamente popolato dal retriever.
-                answer = qa_chain.run(question=user_input, chat_history=chat_history_str)
+                answer = qa_chain.run(user_input, chat_history_str)
             except Exception as e:
                 answer = f"Si è verificato un errore durante l'elaborazione: {e}"
         
